@@ -122,7 +122,8 @@ export async function deleteMaterial(req: Request, res: Response) {
 
 export async function updateMaterial(req: Request, res: Response) {
     try {
-        const { 
+        const id = req.params.materialId;
+        const {
             material, 
             descricao, 
             unidade, 
@@ -154,9 +155,13 @@ export async function updateMaterial(req: Request, res: Response) {
             a6,
             descricao_a6
         }: Material = req.body;
-    
+
+        if((material == null || descricao == null || unidade == null || empresa == null || centro == null || deposito == null || lote == null || saldo == null || saldo_projeto == null || projeto == null || precomm == null || precolastpo == null || setor_atividade == null || decriacao_sa == null || grupo_merc == null || descricao_gm == null || tuc == null || descricao_tuc == null || a1 == null || descricao_a1 == null || a2 == null || descricao_a2 == null || a3 == null || descricao_a3 == null || a4 == null || descricao_a4 == null || a5 == null || descricao_a5 == null || a6 == null || descricao_a6 == null)) {
+            return res.status(400).json({ msg: "Please fill all fields" })
+        }
+
         const database: undefined | any = await getdata()
-        const newMaterial = await database
+        const newTexto = await database
             .request()
             .input("material", sql.VarChar, material)
             .input("descricao", sql.VarChar, descricao)
@@ -188,10 +193,9 @@ export async function updateMaterial(req: Request, res: Response) {
             .input("descricao_a5", sql.VarChar, descricao_a5)
             .input("a6", sql.VarChar, a6)
             .input("descricao_a6", sql.VarChar, descricao_a6)
-            .query('UPDATE INTO O_MATERIAL (material, descricao, unidade, empresa, centro, deposito, lote, saldo, saldo_projeto, projeto, precomm, precolastpo, setor_atividade, decriacao_sa, grupo_merc, descricao_gm, tuc, descricao_tuc, a1, descricao_a1, a2, descricao_a2, a3, descricao_a3, a4, descricao_a4, a5, descricao_a5, a6, descricao_a6) VALUES (@material, @descricao, @unidade, @empresa, @centro, @deposito, @lote, @saldo, @saldo_projeto, @projeto, @precomm, @precolastpo, @setor_atividade, @decriacao_sa, @grupo_merc, @descricao_gm, @tuc, @descricao_tuc, @a1, @descricao_a1, @a2, @descricao_a2, @a3, @descricao_a3, @a4, @descricao_a4, @a5, @descricao_a5, @a6, @descricao_a6)')
+            .query(`UPDATE O_MATERIAL SET material = @material, descricao = @descricao, unidade = @unidade, empresa = @empresa, centro = @centro, deposito = @deposito, lote = @lote, saldo = @saldo, saldo_projeto = @saldo_projeto, projeto = @projeto, precomm = @precomm, precolastpo = @precolastpo, setor_atividade = @setor_atividade, decriacao_sa = @decriacao_sa, grupo_merc = @grupo_merc, descricao_gm = @descricao_gm, tuc = @tuc, descricao_tuc = @descricao_tuc, a1 = @a1, descricao_a1 = @descricao_a1, a2 = @a2, descricao_a2 = @descricao_a2, a3 = @a3, descricao_a3 = @descricao_a3, a4 = @a4, descricao_a4 = @descricao_a4, a5 = @a5, descricao_a5 = @descricao_a5, a6 = @a6, descricao_a6 = @descricao_a6 WHERE item_id = ${id}`)
         
         return res.status(200).json({ message: 'Material Updated'});
-
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');

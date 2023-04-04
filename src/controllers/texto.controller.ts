@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 
 // DB
-import { connect } from '../database'
 import { getdata, sql } from '../database'
 
 // Interfaces

@@ -16,6 +16,7 @@ export async function connect() {
 
 
 import sql from 'mssql'
+
 const sqlConfig = {
   user: 'sa',
   password: '1234',
@@ -31,6 +32,20 @@ const sqlConfig = {
   },
   port: 49693
 }
+
+export async function getdata() {
+  try {
+    let pool = await sql.connect(sqlConfig)
+    console.log('Conectado ao banco de dados!')
+    return pool
+  } catch (err) {
+    console.log('Erro ao conectar com o banco de dados')
+    console.log(err)
+  }
+}
+
+export { sql }
+
 /*
 export async function getdata(query: string) {
  try {
@@ -46,15 +61,3 @@ export async function getdata(query: string) {
 
 getdata('select * from o_material')
 */
-
-export async function getdata() {
-  try {
-    console.log('Conectado ao banco de dados!')
-    let pool = await sql.connect(sqlConfig)
-    return pool
-  } catch (err) {
-   console.log('Erro ao conectar com o banco de dados')
-   console.log(err)
-  }
- }
- 

@@ -29,6 +29,15 @@ export class App {
         this.app.use(morgan('dev'));
         this.app.use(express.json());
         this.app.use(bodyParser.json());
+        this.app.use(express.urlencoded({ extended: false }))
+        this.app.use(function(req, res, next) {
+            res.setHeader("Access-Control-Allow-Origin", "*")
+            res.header(
+                "Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept"
+            )
+            next()
+        })
     }
 
     private routes() {

@@ -4,12 +4,12 @@ import { getMaterials, createMaterial, getMaterial, deleteMaterial, updateMateri
 const router = Router();
 
 router.route('/')
-    .get(getMaterials)
-    .post(createMaterial);
+    .get(getMaterials) //ok
+    .post(createMaterial); //ok
 
 router.route('/:materialId')
-    .get(getMaterial)
-    .delete(deleteMaterial)
-    .put(updateMaterial);
+    .get(getMaterial) //ok
+    .delete(deleteMaterial) //ok
+    .put(updateMaterial); //
 
 export default router;

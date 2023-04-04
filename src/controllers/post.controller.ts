@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 
 // DB
-import { connect } from '../database'
 import { getdata, sql } from '../database';
 
 // Interfaces
@@ -59,7 +58,7 @@ export async function deletePost(req: Request, res: Response) {
     try {
         const id = req.params.postId;
         const database: undefined | any = await getdata()
-        const material = await database.request().query(`DELETE FROM O_POST WHERE id = ${id}`)
+        const post = await database.request().query(`DELETE FROM O_POST WHERE id = ${id}`)
         return res.status(200).json({ message: `Post item_id "${id}" deleted` })
     } catch (err) {
         console.log(err)

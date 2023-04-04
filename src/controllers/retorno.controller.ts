@@ -80,7 +80,7 @@ export async function updateRetorno(req: Request, res: Response) {
             .input("mensagem", sql.VarChar, mensagem)
             .query(`UPDATE O_RETORNO SET cod_ret = @cod_ret, mensagem = @mensagem WHERE id_lote = ${id}`)
         
-        return res.status(200).json({ message: 'RETURN Updated'});
+        return res.status(200).json({ message: 'Retorno Updated'});
 
     } catch (err) {
         console.log(err)

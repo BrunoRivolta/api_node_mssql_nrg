@@ -2,53 +2,90 @@ import { Request, Response } from 'express'
 
 // DB
 import { connect } from '../database'
+import { getdata, sql } from '../database'
+
 // Interfaces
 import { Texto } from '../interface/Texto'
 
 export async function getTextos(req: Request, res: Response): Promise<Response | void> {
     try {
-        const conn = await connect();
-        const textos = await conn.query('SELECT * FROM O_TEXTO');
-        return res.json(textos[0]);
+        const database: undefined | any = await getdata()
+        const textos = await database.request().query('SELECT * FROM O_TEXTO')
+        return res.status(200).json(textos.recordset);
     }
-    catch (e) {
-        console.log(e)
+    catch (err) {
+        console.log(err)
+        return res.status(500).send('Server error!');
     }
 }
 
 export async function createTexto(req: Request, res: Response) {
-    const newTexto: Texto = req.body;
-    const conn = await connect();
-    await conn.query('INSERT INTO O_TEXTO SET ?', [newTexto]);
-    res.json({
-        message: 'New Texto Created'
-    });
+    try {
+        const { 
+            material, 
+            descricao_longa,
+        }: Texto = req.body;
+    
+        const database: undefined | any = await getdata()
+        const newTexto = await database
+            .request()
+            .input("material", sql.VarChar, material)
+            .input("descricao_longa", sql.VarChar, descricao_longa)
+            .query('INSERT INTO O_TEXTO (material, descricao_longa) VALUES (@material, @descricao_longa)')
+        
+        return res.status(200).json({ message: 'New Texto Created'});
+
+    } catch (err) {
+        console.log(err)
+        return res.status(500).send('Server error!');
+    }
 }
 
 export async function getTexto(req: Request, res: Response) {
-    const id = req.params.textoId;
-    const conn = await connect();
-    const Textos = await conn.query('SELECT * FROM O_TEXTO WHERE id = ?', [id]);
-    res.json(Textos[0]);
+    try {
+        const id = req.params.textoId;
+        const database: undefined | any = await getdata()
+        const texto = await database.request().query(`SELECT * FROM O_TEXTO WHERE id = ${id}`)
+        return res.status(200).json(texto.recordset[0])
+    } catch (err) {
+        console.log(err)
+        return res.status(500).send('Server error!');
+    }
 }
 
 export async function deleteTexto(req: Request, res: Response) {
-    const id = req.params.textoId;
-    const conn = await connect();
-    await conn.query('DELETE FROM O_TEXTO WHERE id = ?', [id]);
-    res.json({
-        message: 'Texto deleted'
-    });
+        try {
+        const id = req.params.textoId;
+        const database: undefined | any = await getdata()
+        const texto = await database.request().query(`DELETE FROM O_TEXTO WHERE id = ${id}`)
+        return res.status(200).json({ message: `Texto id "${id}" deleted` })
+    } catch (err) {
+        console.log(err)
+        return res.status(500).send('Server error!');
+    }
 }
 
 export async function updateTexto(req: Request, res: Response) {
-    const id = req.params.textoId;
-    const updatedTexto: Texto = req.body;
-    const conn = await connect();
-    await conn.query('UPDATE O_TEXTO set ? WHERE id = ?', [updatedTexto, id]);
-    res.json({
-        message: 'Texto Updated'
-    });
+    try {
+        const id = req.params.textoId;
+        const { material, descricao_longa }: Texto = req.body;
+
+        if((material == null || descricao_longa == null)) {
+            return res.status(400).json({ msg: "Please fill all fields" })
+        }
+
+        const database: undefined | any = await getdata()
+        const newTexto = await database
+            .request()
+            .input("material", sql.VarChar, material)
+            .input("descricao_longa", sql.VarChar, descricao_longa)
+            .query(`UPDATE O_TEXTO SET material = @material, descricao_longa = @descricao_longa WHERE id = ${id}`)
+        
+        return res.status(200).json({ message: 'Texto Updated'});
+    } catch (err) {
+        console.log(err)
+        return res.status(500).send('Server error!');
+    }
 }
 
 /* To Test at Postman 

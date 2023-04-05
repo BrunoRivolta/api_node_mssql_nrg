@@ -14,14 +14,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 const express_1 = __importDefault(require("express"));
+const morgan_1 = __importDefault(require("morgan"));
+// Routes
+const index_routes_1 = __importDefault(require("./routes/index.routes"));
+const post_routes_1 = __importDefault(require("./routes/post.routes"));
+const material_routes_1 = __importDefault(require("./routes/material.routes"));
+const texto_routes_1 = __importDefault(require("./routes/texto.routes"));
+const retorno_routes_1 = __importDefault(require("./routes/retorno.routes"));
+const body_parser_1 = __importDefault(require("body-parser"));
 class App {
-    constructor() {
+    constructor(port) {
+        this.port = port;
         this.app = (0, express_1.default)();
+        this.settings();
+        this.middlewares();
+        this.routes();
+    }
+    settings() {
+        this.app.set('port', this.port || process.env.PORT || 3000);
+    }
+    middlewares() {
+        this.app.use((0, morgan_1.default)('dev'));
+        this.app.use(express_1.default.json());
+        this.app.use(body_parser_1.default.json());
+        this.app.use(express_1.default.urlencoded({ extended: false }));
+        this.app.use(function (req, res, next) {
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+        });
+    }
+    routes() {
+        this.app.use(index_routes_1.default);
+        this.app.use('/posts', post_routes_1.default);
+        this.app.use('/materials', material_routes_1.default);
+        this.app.use('/textos', texto_routes_1.default);
+        this.app.use('/retorno', retorno_routes_1.default);
     }
     listen() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.app.listen(3000);
-            console.log(`Server on port`, 3000);
+            yield this.app.listen(this.app.get('port'));
+            console.log('Server on port', this.app.get('port'));
         });
     }
 }

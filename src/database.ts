@@ -3,9 +3,9 @@ import * as dotenv from "dotenv"
 dotenv.config()
 
 const sqlConfig = {
-  user: process.env.SQL_USER,
-  password: process.env.SQL_PASSWORD,
-  database: process.env.SQL_DATABASE,
+  user: 'sa',
+  password: '1234',
+  database: "equatorial",
   server: 'DESKTOP-L91ORGI',
   pool: {
     max: 10,

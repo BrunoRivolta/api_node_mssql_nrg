@@ -31,14 +31,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = require("./app");
+exports.sql = exports.getdata = void 0;
+const mssql_1 = __importDefault(require("mssql"));
+exports.sql = mssql_1.default;
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-function main() {
+const sqlConfig = {
+    user: 'sa',
+    password: '1234',
+    database: "equatorial",
+    server: 'DESKTOP-L91ORGI',
+    pool: {
+        max: 10,
+        min: 0,
+        idleTimeoutMillis: 30000
+    },
+    options: {
+        trustServerCertificate: true,
+    },
+    port: 49693
+};
+function getdata() {
     return __awaiter(this, void 0, void 0, function* () {
-        const app = new app_1.App(3000);
-        yield app.listen();
+        try {
+            let pool = yield mssql_1.default.connect(sqlConfig);
+            console.log('Conectado ao banco de dados!');
+            return pool;
+        }
+        catch (err) {
+            console.log('Erro ao conectar com o banco de dados');
+            console.log(err);
+        }
     });
 }
-main();
+exports.getdata = getdata;

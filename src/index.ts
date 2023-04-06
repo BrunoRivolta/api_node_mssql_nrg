@@ -3,7 +3,7 @@ import * as dotenv from "dotenv"
 dotenv.config()
 
 async function main() {
-    const app = new App(3000);
+    const app = new App(8080);
     await app.listen();
 }
 

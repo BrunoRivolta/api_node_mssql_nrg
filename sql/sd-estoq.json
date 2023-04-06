@@ -1,0 +1,211 @@
+{"hxgn-sd-estoq": [
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "",
+    "cod-depos": "A39",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "",
+    "cod-depos": "L01",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "a01",
+    "it-codigo": "00000001",
+    "cod-depos": "L01",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00000010",
+    "cod-depos": "A39",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00000010",
+    "cod-depos": "L01",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": " ",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100006",
+    "cod-depos": "L03",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100011",
+    "cod-depos": "L03",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100041",
+    "cod-depos": "L03",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100041",
+    "cod-depos": "L05",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100051",
+    "cod-depos": "L03",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100052",
+    "cod-depos": "L03",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100055",
+    "cod-depos": "L03",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100056",
+    "cod-depos": "L03",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100058",
+    "cod-depos": "L01",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00100059",
+    "cod-depos": "L01",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "a01",
+    "it-codigo": "00280027",
+    "cod-depos": "P05",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00280032",
+    "cod-depos": "P01",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00280032",
+    "cod-depos": "P04",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  },
+  {
+    "cod-estabel": "A01",
+    "it-codigo": "00280032",
+    "cod-depos": "P05",
+    "cod-localiz": "",
+    "cod-refer": "",
+    "lote": "",
+    "quantidade-atu": 0.0,
+    "ind-processado": 0,
+    "ind-alter": 0
+  }
+]}

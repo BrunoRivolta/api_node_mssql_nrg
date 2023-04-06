@@ -21,6 +21,8 @@ const post_routes_1 = __importDefault(require("./routes/post.routes"));
 const material_routes_1 = __importDefault(require("./routes/material.routes"));
 const texto_routes_1 = __importDefault(require("./routes/texto.routes"));
 const retorno_routes_1 = __importDefault(require("./routes/retorno.routes"));
+const sd_estoq_routes_1 = __importDefault(require("./routes/sd-estoq.routes"));
+const itens_routes_1 = __importDefault(require("./routes/itens.routes"));
 const body_parser_1 = __importDefault(require("body-parser"));
 class App {
     constructor(port) {
@@ -50,6 +52,8 @@ class App {
         this.app.use('/materials', material_routes_1.default);
         this.app.use('/textos', texto_routes_1.default);
         this.app.use('/retorno', retorno_routes_1.default);
+        this.app.use('/sd-estoq', sd_estoq_routes_1.default);
+        this.app.use('/itens', itens_routes_1.default);
     }
     listen() {
         return __awaiter(this, void 0, void 0, function* () {

@@ -37,7 +37,7 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        const app = new app_1.App(3000);
+        const app = new app_1.App(8080);
         yield app.listen();
     });
 }

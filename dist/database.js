@@ -48,7 +48,7 @@ const sqlConfig = {
     pool: {
         max: 10,
         min: 0,
-        idleTimeoutMillis: 30000
+        idleTimeoutMillis: 8080
     },
     options: {
         trustServerCertificate: true,

@@ -7,6 +7,8 @@ import PostRoutes from './routes/post.routes'
 import MaterialRoutes from './routes/material.routes'
 import TextoRoutes from './routes/texto.routes'
 import RetornoRoutes from './routes/retorno.routes'
+import EstoqRoutes from './routes/sd-estoq.routes'
+import ItensRoutes from './routes/itens.routes'
 import bodyParser from 'body-parser'
 
 export class App {
@@ -46,6 +48,8 @@ export class App {
         this.app.use('/materials', MaterialRoutes);
         this.app.use('/textos', TextoRoutes);
         this.app.use('/retorno', RetornoRoutes);
+        this.app.use('/sd-estoq', EstoqRoutes);
+        this.app.use('/itens', ItensRoutes);
     }
 
     async listen(): Promise<void> {

@@ -8,16 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updatePost = exports.deletePost = exports.getPost = exports.createPost = exports.getPosts = void 0;
-// DB
-const database_1 = require("../database");
+//@ts-ignore
+const models_1 = __importDefault(require("../models"));
 function getPosts(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const database = yield (0, database_1.getdata)();
-            const post = yield database.request().query('SELECT * FROM O_POST');
-            return res.status(200).json(post.recordset);
+            const posts = yield models_1.default.Post.findAll();
+            if (posts.length === 0) {
+                return res.status(204).json();
+            }
+            else {
+                return res.status(200).json(posts);
+            }
         }
         catch (err) {
             console.log(err);
@@ -28,15 +35,9 @@ function getPosts(req, res) {
 exports.getPosts = getPosts;
 function createPost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const newPost = req.body;
         try {
-            const { title, description, created_at = new Date() } = req.body;
-            const database = yield (0, database_1.getdata)();
-            const newPost = yield database
-                .request()
-                .input("title", database_1.sql.VarChar, title)
-                .input("description", database_1.sql.VarChar, description)
-                .input("created_at", database_1.sql.Date, created_at)
-                .query('INSERT INTO O_POST (title, description, created_at) VALUES (@title, @description, @created_at)');
+            yield models_1.default.Post.create(newPost);
             return res.status(200).json({ message: 'New Post Created' });
         }
         catch (err) {
@@ -48,11 +49,10 @@ function createPost(req, res) {
 exports.createPost = createPost;
 function getPost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const id = req.params.postId;
         try {
-            const id = req.params.postId;
-            const database = yield (0, database_1.getdata)();
-            const post = yield database.request().query(`SELECT * FROM O_POST WHERE id = ${id}`);
-            return res.status(200).json(post.recordset[0]);
+            const post = yield models_1.default.Post.findAll({ where: { "_id": id } });
+            return res.status(200).json(post);
         }
         catch (err) {
             console.log(err);
@@ -63,11 +63,10 @@ function getPost(req, res) {
 exports.getPost = getPost;
 function deletePost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const id = req.params.postId;
         try {
-            const id = req.params.postId;
-            const database = yield (0, database_1.getdata)();
-            const post = yield database.request().query(`DELETE FROM O_POST WHERE id = ${id}`);
-            return res.status(200).json({ message: `Post item_id "${id}" deleted` });
+            yield models_1.default.Post.destroy({ where: { "_id": id } });
+            return res.status(200).json({ message: `Post id "${id}" deleted` });
         }
         catch (err) {
             console.log(err);
@@ -78,19 +77,11 @@ function deletePost(req, res) {
 exports.deletePost = deletePost;
 function updatePost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const id = req.params.postId;
+        const updatedPost = req.body;
         try {
-            const id = req.params.postId;
-            const { title, description } = req.body;
-            if ((title == null || description == null)) {
-                return res.status(400).json({ msg: "Please fill all fields" });
-            }
-            const database = yield (0, database_1.getdata)();
-            const newPost = yield database
-                .request()
-                .input("title", database_1.sql.VarChar, title)
-                .input("description", database_1.sql.VarChar, description)
-                .query(`UPDATE O_POST SET title = @title, description = @description WHERE id = ${id}`);
-            return res.status(200).json({ message: 'Post Updated' });
+            yield models_1.default.Post.update(updatedPost, { where: { "_id": id } });
+            return res.status(200).json({ message: `Post id "${id}" Updated` });
         }
         catch (err) {
             console.log(err);

@@ -1,16 +1,16 @@
 import { Request, Response } from 'express'
-
-// DB
-import { getdata, sql } from '../database'
-
-// Interfaces
 import { Texto } from '../interface/Texto'
+//@ts-ignore
+import database from '../models'
 
 export async function getTextos(req: Request, res: Response): Promise<Response | void> {
     try {
-        const database: undefined | any = await getdata()
-        const textos = await database.request().query('SELECT * FROM O_TEXTO')
-        return res.status(200).json(textos.recordset);
+        const textos = await database.Texto.findAll()
+        if(textos.length === 0) {
+            return res.status(204).json();
+        } else {
+            return res.status(200).json(textos);
+        }
     }
     catch (err) {
         console.log(err)
@@ -19,21 +19,10 @@ export async function getTextos(req: Request, res: Response): Promise<Response |
 }
 
 export async function createTexto(req: Request, res: Response) {
+	const newTexto: Texto = req.body;
     try {
-        const { 
-            material, 
-            descricao_longa,
-        }: Texto = req.body;
-    
-        const database: undefined | any = await getdata()
-        const newTexto = await database
-            .request()
-            .input("material", sql.VarChar, material)
-            .input("descricao_longa", sql.VarChar, descricao_longa)
-            .query('INSERT INTO O_TEXTO (material, descricao_longa) VALUES (@material, @descricao_longa)')
-        
+		await database.Texto.create(newTexto)
         return res.status(200).json({ message: 'New Texto Created'});
-
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -41,11 +30,11 @@ export async function createTexto(req: Request, res: Response) {
 }
 
 export async function getTexto(req: Request, res: Response) {
+	const textoMaterial = req.params.material;
+	console.log(textoMaterial)
     try {
-        const id = req.params.textoId;
-        const database: undefined | any = await getdata()
-        const texto = await database.request().query(`SELECT * FROM O_TEXTO WHERE id = ${id}`)
-        return res.status(200).json(texto.recordset[0])
+		const texto = await database.Texto.findAll({ where: { "material": textoMaterial } })
+        return res.status(200).json(texto)
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -53,11 +42,10 @@ export async function getTexto(req: Request, res: Response) {
 }
 
 export async function deleteTexto(req: Request, res: Response) {
-        try {
-        const id = req.params.textoId;
-        const database: undefined | any = await getdata()
-        const texto = await database.request().query(`DELETE FROM O_TEXTO WHERE id = ${id}`)
-        return res.status(200).json({ message: `Texto id "${id}" deleted` })
+	const textoMaterial = req.params.material;
+    try {
+		await database.Texto.destroy( {where: { "material": textoMaterial } })
+        return res.status(200).json({ message: `Texto material "${textoMaterial}" deleted` })
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -65,21 +53,10 @@ export async function deleteTexto(req: Request, res: Response) {
 }
 
 export async function updateTexto(req: Request, res: Response) {
+	const textoMaterial = req.params.material;
+	const updatedTexto: Texto = req.body;
     try {
-        const id = req.params.textoId;
-        const { material, descricao_longa }: Texto = req.body;
-
-        if((material == null || descricao_longa == null)) {
-            return res.status(400).json({ msg: "Please fill all fields" })
-        }
-
-        const database: undefined | any = await getdata()
-        const newTexto = await database
-            .request()
-            .input("material", sql.VarChar, material)
-            .input("descricao_longa", sql.VarChar, descricao_longa)
-            .query(`UPDATE O_TEXTO SET material = @material, descricao_longa = @descricao_longa WHERE id = ${id}`)
-        
+		await database.Texto.update(updatedTexto, { where: { "material": textoMaterial } })
         return res.status(200).json({ message: 'Texto Updated'});
     } catch (err) {
         console.log(err)

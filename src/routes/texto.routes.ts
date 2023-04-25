@@ -7,7 +7,7 @@ router.route('/')
     .get(getTextos)
     .post(createTexto);
 
-router.route('/:textoId')
+router.route('/:material')
     .get(getTexto)
     .delete(deleteTexto)
     .put(updateTexto);

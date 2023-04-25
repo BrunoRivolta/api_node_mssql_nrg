@@ -16,3 +16,4 @@ export interface Item {
     "ind-processado": number,
     "ind-alter": number
 }
+

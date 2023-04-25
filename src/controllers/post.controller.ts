@@ -1,16 +1,16 @@
 import { Request, Response } from 'express'
-
-// DB
-import { getdata, sql } from '../database';
-
-// Interfaces
 import { Post } from '../interface/Post'
+//@ts-ignore
+import database from '../models'
 
 export async function getPosts(req: Request, res: Response): Promise<Response | void> {
     try {
-        const database: undefined | any = await getdata()
-        const post = await database.request().query('SELECT * FROM O_POST')
-        return res.status(200).json(post.recordset);
+        const posts = await database.Post.findAll()
+        if(posts.length === 0) {
+            return res.status(204).json();
+        } else {
+            return res.status(200).json(posts);
+        }
     }
     catch (err) {
         console.log(err)
@@ -19,23 +19,10 @@ export async function getPosts(req: Request, res: Response): Promise<Response | 
 }
 
 export async function createPost(req: Request, res: Response) {
+	const newPost: Post = req.body;
     try {
-        const { 
-            title, 
-            description,
-            created_at = new Date()
-        }: Post = req.body;
-    
-        const database: undefined | any = await getdata()
-        const newPost = await database
-            .request()
-            .input("title", sql.VarChar, title)
-            .input("description", sql.VarChar, description)
-            .input("created_at", sql.Date, created_at)
-            .query('INSERT INTO O_POST (title, description, created_at) VALUES (@title, @description, @created_at)')
-        
+		await database.Post.create(newPost)
         return res.status(200).json({ message: 'New Post Created'});
-
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -43,11 +30,10 @@ export async function createPost(req: Request, res: Response) {
 }
 
 export async function getPost(req: Request, res: Response) {
+	const id = req.params.postId;
     try {
-        const id = req.params.postId;
-        const database: undefined | any = await getdata()
-        const post = await database.request().query(`SELECT * FROM O_POST WHERE id = ${id}`)
-        return res.status(200).json(post.recordset[0])
+		const post = await database.Post.findAll({ where: { "_id": id } })
+        return res.status(200).json(post)
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -55,11 +41,10 @@ export async function getPost(req: Request, res: Response) {
 }
 
 export async function deletePost(req: Request, res: Response) {
+	const id = req.params.postId;
     try {
-        const id = req.params.postId;
-        const database: undefined | any = await getdata()
-        const post = await database.request().query(`DELETE FROM O_POST WHERE id = ${id}`)
-        return res.status(200).json({ message: `Post item_id "${id}" deleted` })
+		await database.Post.destroy( {where: { "_id": id } })
+        return res.status(200).json({ message: `Post id "${id}" deleted` })
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -67,23 +52,11 @@ export async function deletePost(req: Request, res: Response) {
 }
 
 export async function updatePost(req: Request, res: Response) {
+    const id = req.params.postId;
+	const updatedPost: Post = req.body;
     try {
-        const id = req.params.postId;
-        const { title, description}: Post = req.body;
-    
-        if((title == null || description == null)) {
-            return res.status(400).json({ msg: "Please fill all fields" })
-        }
-
-        const database: undefined | any = await getdata()
-        const newPost = await database
-            .request()
-            .input("title", sql.VarChar, title)
-            .input("description", sql.VarChar, description)
-            .query(`UPDATE O_POST SET title = @title, description = @description WHERE id = ${id}`)
-        
-        return res.status(200).json({ message: 'Post Updated'});
-
+		await database.Post.update(updatedPost, { where: { "_id": id } })
+        return res.status(200).json({ message: `Post id "${id}" Updated`});
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');

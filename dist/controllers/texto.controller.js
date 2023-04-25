@@ -8,16 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateTexto = exports.deleteTexto = exports.getTexto = exports.createTexto = exports.getTextos = void 0;
-// DB
-const database_1 = require("../database");
+//@ts-ignore
+const models_1 = __importDefault(require("../models"));
 function getTextos(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const database = yield (0, database_1.getdata)();
-            const textos = yield database.request().query('SELECT * FROM O_TEXTO');
-            return res.status(200).json(textos.recordset);
+            const textos = yield models_1.default.Texto.findAll();
+            if (textos.length === 0) {
+                return res.status(204).json();
+            }
+            else {
+                return res.status(200).json(textos);
+            }
         }
         catch (err) {
             console.log(err);
@@ -28,14 +35,9 @@ function getTextos(req, res) {
 exports.getTextos = getTextos;
 function createTexto(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const newTexto = req.body;
         try {
-            const { material, descricao_longa, } = req.body;
-            const database = yield (0, database_1.getdata)();
-            const newTexto = yield database
-                .request()
-                .input("material", database_1.sql.VarChar, material)
-                .input("descricao_longa", database_1.sql.VarChar, descricao_longa)
-                .query('INSERT INTO O_TEXTO (material, descricao_longa) VALUES (@material, @descricao_longa)');
+            yield models_1.default.Texto.create(newTexto);
             return res.status(200).json({ message: 'New Texto Created' });
         }
         catch (err) {
@@ -47,11 +49,11 @@ function createTexto(req, res) {
 exports.createTexto = createTexto;
 function getTexto(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const textoMaterial = req.params.material;
+        console.log(textoMaterial);
         try {
-            const id = req.params.textoId;
-            const database = yield (0, database_1.getdata)();
-            const texto = yield database.request().query(`SELECT * FROM O_TEXTO WHERE id = ${id}`);
-            return res.status(200).json(texto.recordset[0]);
+            const texto = yield models_1.default.Texto.findAll({ where: { "material": textoMaterial } });
+            return res.status(200).json(texto);
         }
         catch (err) {
             console.log(err);
@@ -62,11 +64,10 @@ function getTexto(req, res) {
 exports.getTexto = getTexto;
 function deleteTexto(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const textoMaterial = req.params.material;
         try {
-            const id = req.params.textoId;
-            const database = yield (0, database_1.getdata)();
-            const texto = yield database.request().query(`DELETE FROM O_TEXTO WHERE id = ${id}`);
-            return res.status(200).json({ message: `Texto id "${id}" deleted` });
+            yield models_1.default.Texto.destroy({ where: { "material": textoMaterial } });
+            return res.status(200).json({ message: `Texto material "${textoMaterial}" deleted` });
         }
         catch (err) {
             console.log(err);
@@ -77,18 +78,10 @@ function deleteTexto(req, res) {
 exports.deleteTexto = deleteTexto;
 function updateTexto(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const textoMaterial = req.params.material;
+        const updatedTexto = req.body;
         try {
-            const id = req.params.textoId;
-            const { material, descricao_longa } = req.body;
-            if ((material == null || descricao_longa == null)) {
-                return res.status(400).json({ msg: "Please fill all fields" });
-            }
-            const database = yield (0, database_1.getdata)();
-            const newTexto = yield database
-                .request()
-                .input("material", database_1.sql.VarChar, material)
-                .input("descricao_longa", database_1.sql.VarChar, descricao_longa)
-                .query(`UPDATE O_TEXTO SET material = @material, descricao_longa = @descricao_longa WHERE id = ${id}`);
+            yield models_1.default.Texto.update(updatedTexto, { where: { "material": textoMaterial } });
             return res.status(200).json({ message: 'Texto Updated' });
         }
         catch (err) {

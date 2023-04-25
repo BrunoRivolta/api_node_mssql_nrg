@@ -8,16 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateRetorno = exports.deleteRetorno = exports.getRetorno = exports.createRetorno = exports.getRetornos = void 0;
-// DB
-const database_1 = require("../database");
+//@ts-ignore
+const models_1 = __importDefault(require("../models"));
 function getRetornos(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const database = yield (0, database_1.getdata)();
-            const retorno = yield database.request().query('SELECT * FROM O_RETORNO');
-            return res.status(200).json(retorno.recordset);
+            const retornos = yield models_1.default.Retorno.findAll();
+            if (retornos.length === 0) {
+                return res.status(204).json();
+            }
+            else {
+                return res.status(200).json(retornos);
+            }
         }
         catch (err) {
             console.log(err);
@@ -28,14 +35,9 @@ function getRetornos(req, res) {
 exports.getRetornos = getRetornos;
 function createRetorno(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const newRetorno = req.body;
         try {
-            const { cod_ret, mensagem, } = req.body;
-            const database = yield (0, database_1.getdata)();
-            const newRetorno = yield database
-                .request()
-                .input("cod_ret", database_1.sql.VarChar, cod_ret)
-                .input("mensagem", database_1.sql.VarChar, mensagem)
-                .query('INSERT INTO O_RETORNO (cod_ret, mensagem) VALUES (@cod_ret, @mensagem)');
+            yield models_1.default.Retorno.create(newRetorno);
             return res.status(200).json({ message: 'New Retorno Created' });
         }
         catch (err) {
@@ -47,11 +49,10 @@ function createRetorno(req, res) {
 exports.createRetorno = createRetorno;
 function getRetorno(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const idLote = req.params.retornolId;
         try {
-            const id = req.params.retornolId;
-            const database = yield (0, database_1.getdata)();
-            const retorno = yield database.request().query(`SELECT * FROM O_RETORNO WHERE id_lote = ${id}`);
-            return res.status(200).json(retorno.recordset[0]);
+            const retorno = yield models_1.default.Retorno.findAll({ where: { "id_lote": idLote } });
+            return res.status(200).json(retorno);
         }
         catch (err) {
             console.log(err);
@@ -62,11 +63,10 @@ function getRetorno(req, res) {
 exports.getRetorno = getRetorno;
 function deleteRetorno(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const idLote = req.params.retornolId;
         try {
-            const id = req.params.retornolId;
-            const database = yield (0, database_1.getdata)();
-            const retorno = yield database.request().query(`DELETE FROM O_RETORNO WHERE id_lote = ${id}`);
-            return res.status(200).json({ message: `Retorno id_lote "${id}" deleted` });
+            yield models_1.default.Retorno.destroy({ where: { "id_lote": idLote } });
+            return res.status(200).json({ message: `Retorno id "${idLote}" deleted` });
         }
         catch (err) {
             console.log(err);
@@ -77,18 +77,10 @@ function deleteRetorno(req, res) {
 exports.deleteRetorno = deleteRetorno;
 function updateRetorno(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const idLote = req.params.retornolId;
+        const updatedRetorno = req.body;
         try {
-            const id = req.params.retornolId;
-            const { cod_ret, mensagem } = req.body;
-            if ((cod_ret == null || mensagem == null)) {
-                return res.status(400).json({ msg: "Please fill all fields" });
-            }
-            const database = yield (0, database_1.getdata)();
-            const newRetorno = yield database
-                .request()
-                .input("cod_ret", database_1.sql.VarChar, cod_ret)
-                .input("mensagem", database_1.sql.VarChar, mensagem)
-                .query(`UPDATE O_RETORNO SET cod_ret = @cod_ret, mensagem = @mensagem WHERE id_lote = ${id}`);
+            yield models_1.default.Retorno.update(updatedRetorno, { where: { "id_lote": idLote } });
             return res.status(200).json({ message: 'Retorno Updated' });
         }
         catch (err) {

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "sa",
+    "password": "nrb@2008",
+    "database": "equatorial",
+    "host": "localhost",
+    "dialect": "mssql"
+  },
+  "test": {
+    "username": "sa",
+    "password": null,
+    "database": "database_test",
+    "host": "localhost",
+    "dialect": "mssql"
+  },
+  "production": {
+    "username": "sa",
+    "password": null,
+    "database": "database_production",
+    "host": "localhost",
+    "dialect": "mssql"
+  }
+}

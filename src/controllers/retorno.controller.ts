@@ -33,7 +33,7 @@ export async function getRetorno(req: Request, res: Response) {
 	const idLote = req.params.retornolId;
     try {
 		const retorno = await database.Retorno.findAll({ where: { "id_lote": idLote } })
-        return res.status(200).json(retorno)
+        return res.status(200).json(retorno[0])
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -44,7 +44,7 @@ export async function deleteRetorno(req: Request, res: Response) {
 	const idLote = req.params.retornolId;
     try {
 		await database.Retorno.destroy( {where: { "id_lote": idLote } })
-        return res.status(200).json({ message: `Retorno id "${idLote}" deleted` })
+        return res.status(200).json({ message: `Retorno id_lote "${idLote}" deleted` })
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -56,7 +56,7 @@ export async function updateRetorno(req: Request, res: Response) {
 	const updatedRetorno: Retorno = req.body;
     try {
 		await database.Retorno.update(updatedRetorno, { where: { "id_lote": idLote } })
-        return res.status(200).json({ message: 'Retorno Updated'});
+        return res.status(200).json({ message: `Retorno id_lote "${idLote}" updated`});
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');

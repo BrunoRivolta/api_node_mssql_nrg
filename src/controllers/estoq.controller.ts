@@ -33,7 +33,7 @@ export async function getEstoq(req: Request, res: Response) {
 	const it_codigo = req.params.itCod;
     try {
 		const estoq = await database.Estoq.findAll({ where: { "it-codigo": it_codigo } })
-        return res.status(200).json(estoq)
+        return res.status(200).json(estoq[0])
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -44,7 +44,7 @@ export async function deleteEstoq(req: Request, res: Response) {
 	const it_codigo = req.params.itCod;
     try {
 		await database.Estoq.destroy( {where: { "it-codigo": it_codigo } })
-        return res.status(200).json({ message: `Estoq cod "${it_codigo}" deleted` })
+        return res.status(200).json({ message: `Estoq it-codigo "${it_codigo}" deleted` })
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -56,7 +56,7 @@ export async function updateEstoq(req: Request, res: Response) {
 	const updatedEstoq: Estoq = req.body;
     try {
 		await database.Estoq.update(updatedEstoq, { where: { "it-codigo": it_codigo } })
-        return res.status(200).json({ message: `Estoq cod "${it_codigo}" Updated`});
+        return res.status(200).json({ message: `Estoq it-codigo "${it_codigo}" Updated`});
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');

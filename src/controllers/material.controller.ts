@@ -33,7 +33,7 @@ export async function getMaterial(req: Request, res: Response) {
 	const itemId = req.params.materialId;
     try {
 		const material = await database.Material.findAll({ where: { "item_id": itemId } })
-        return res.status(200).json(material)
+        return res.status(200).json(material[0])
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -44,7 +44,7 @@ export async function deleteMaterial(req: Request, res: Response) {
 	const itemId = req.params.materialId;
     try {
 		await database.Material.destroy( {where: { "item_id": itemId } })
-        return res.status(200).json({ message: `Material id "${itemId}" deleted` })
+        return res.status(200).json({ message: `Material item_id "${itemId}" deleted` })
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -56,7 +56,7 @@ export async function updateMaterial(req: Request, res: Response) {
 	const updatedMaterial: Material = req.body;
     try {
 		await database.Material.update(updatedMaterial, { where: { "item_id": itemId } })
-        return res.status(200).json({ message: `Material id "${itemId}" Updated`});
+        return res.status(200).json({ message: `Material item_id "${itemId}" Updated`});
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');

@@ -34,7 +34,7 @@ export async function getTexto(req: Request, res: Response) {
 	console.log(textoMaterial)
     try {
 		const texto = await database.Texto.findAll({ where: { "material": textoMaterial } })
-        return res.status(200).json(texto)
+        return res.status(200).json(texto[0])
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
@@ -57,7 +57,7 @@ export async function updateTexto(req: Request, res: Response) {
 	const updatedTexto: Texto = req.body;
     try {
 		await database.Texto.update(updatedTexto, { where: { "material": textoMaterial } })
-        return res.status(200).json({ message: 'Texto Updated'});
+        return res.status(200).json({ message: `Texto material "${textoMaterial} Updated`});
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');

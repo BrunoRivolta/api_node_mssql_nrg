@@ -33,7 +33,7 @@ export async function getPost(req: Request, res: Response) {
 	const id = req.params.postId;
     try {
 		const post = await database.Post.findAll({ where: { "_id": id } })
-        return res.status(200).json(post)
+        return res.status(200).json(post[0])
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');

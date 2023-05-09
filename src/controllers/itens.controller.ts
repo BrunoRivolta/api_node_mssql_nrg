@@ -34,7 +34,7 @@ export async function getItem(req: Request, res: Response) {
 	const estab = req.params.estab;
     try {
 		const item = await database.Item.findAll({ where: { "estab": estab } })
-        return res.status(200).json(item)
+        return res.status(200).json(item[0])
     } catch (err) {
         console.log(err)
         return res.status(500).send('Server error!');
